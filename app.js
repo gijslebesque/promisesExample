@@ -1,3 +1,12 @@
+// In this example, imagine that every setTimeout is actually connecting to a database.
+
+//We first want to create a user and store it in our database this will take some time.
+//After we have created the user, we have realised that the user's first name is wrong.
+//Therefore, we want to update it (which also happens asynchronously).
+//So we want to be sure our user is stored first. And after that we want to update our user.
+
+//Run the script with node. And have a look at the console.log() in your terminal.
+
 //A simple user object
 const user = {
   name: "Gijs",
@@ -23,6 +32,7 @@ const createUser = user => {
 const updateUser = user => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
+      //modify user and return it's updated value to resovle.
       user.name = "Eric";
       return resolve(user);
     }, 3000);
@@ -33,10 +43,11 @@ const updateUser = user => {
 
 //here we call the our promises and chain them.
 createUser(user)
-  .then(returnValueOfResolveCreateUser => {
-    console.log("First user", returnValueOfResolveCreateUser);
+  .then(returnValueOfResolveCreateUserFunc => {
+    console.log("First user", returnValueOfResolveCreateUserFunc);
+    //IMPORTANT! .then needs to a return value which will be passed on to the next .then()
     return updateUser(user);
   })
-  .then(returnValueOfResolveUpdateUser => {
-    console.log("Seconds user", returnValueOfResolveUpdateUser);
+  .then(returnValueOfResolveUpdateUserFunc => {
+    console.log("Seconds user", returnValueOfResolveUpdateUserFunc);
   });
